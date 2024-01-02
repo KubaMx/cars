@@ -42,5 +42,4 @@ class CarTest {
             assertEquals("Model is null or not correct", e.getMessage());
         }
     }
-
 }
