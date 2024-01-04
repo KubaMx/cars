@@ -10,7 +10,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Optional;
 
-public final class JsonConverterImpl<T> implements JsonConverter<T> {
+public sealed class JsonConverterImpl<T> implements JsonConverter<T> permits CarJsonConverter{
     private final String jsonFilename;
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final Type type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
