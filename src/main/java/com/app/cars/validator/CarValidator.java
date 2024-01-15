@@ -8,22 +8,17 @@ import java.util.List;
 public final class CarValidator implements Validator<Car> {
 
     @Override
-    public boolean validate(Car car) {
-        return isCarValid(car);
+    public void validate(Car car) {
+        validateCar(car);
     }
 
-    private boolean isCarValid(Car car) {
-        try {
-            ensureCarNotNull(car);
-            validateCarModel(car);
-            validateCarColor(car);
-            validatePrice(car);
-            validateCarMileage(car);
-            validateCarComponents(car);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    private void validateCar(Car car) {
+        ensureCarNotNull(car);
+        validateCarModel(car);
+        validateCarColor(car);
+        validatePrice(car);
+        validateCarMileage(car);
+        validateCarComponents(car);
     }
 
     private void ensureCarNotNull(Car car) {
