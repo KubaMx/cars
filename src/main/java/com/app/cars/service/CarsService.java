@@ -1,6 +1,7 @@
 package com.app.cars.service;
 
 import com.app.cars.model.Car;
+import com.app.cars.model.Color;
 import com.app.cars.repository.CarsRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -9,15 +10,13 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toMap;
-
 @RequiredArgsConstructor
 @Builder
 public class CarsService {
 
     private final CarsRepository carsRepository;
 
-    // TODO zwraca odwrotna kolejnosc
+    // ta metoda ma tak działać! jest to zgodne z treścią zadania
     public List<Car> sortBy(Comparator<Car> compareBy, SortingOrder sortingOrder) {
         return carsRepository.getCars()
                 .stream()
@@ -33,21 +32,11 @@ public class CarsService {
                 .toList();
     }
 
-    public Map<String, Integer> groupByColor() {
-        var colors = carsRepository
+    public Map<Color, Long> groupByColor() {
+        return carsRepository
                 .getCars()
                 .stream()
-                .collect(Collectors.groupingBy(Car::getColor));
-
-        var countedColors = colors
-                .entrySet()
-                .stream()
-                .collect(toMap(
-                        x -> x.getKey().name(),
-                        x -> x.getValue().size()
-                ));
-
-        return countedColors
+                .collect(Collectors.groupingBy(Car::getColor, Collectors.counting()))
                 .entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
@@ -55,8 +44,9 @@ public class CarsService {
                         Map.Entry::getKey,
                         Map.Entry::getValue,
                         (x, y) -> x,
-                        LinkedHashMap::new // WAZNE -> zeby mapa mogla przechowac posortowane wartosci musi byc LINKED
+                        LinkedHashMap::new
                 ));
+        // WAZNE -> zeby mapa mogla przechowac posortowane wartosci musi byc LINKED
     }
 
     public Map<String, Car> mostExpensiveByModel() {
