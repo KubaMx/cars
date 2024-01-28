@@ -18,24 +18,19 @@ public class CarsService {
 
     // ta metoda ma tak działać! jest to zgodne z treścią zadania
     public List<Car> sortBy(Comparator<Car> compareBy, SortingOrder sortingOrder) {
-        return carsRepository.getCars()
-                .stream()
+        return carsRepository.getCars().stream()
                 .sorted(sortingOrder == SortingOrder.ASCENDING ? compareBy : compareBy.reversed())
                 .toList();
     }
 
     public List<Car> mileageGreaterThan(int mileage) {
-        return carsRepository
-                .getCars()
-                .stream()
+        return carsRepository.getCars().stream()
                 .filter(car -> car.getMileage() > mileage)
                 .toList();
     }
 
     public Map<Color, Long> groupByColor() {
-        return carsRepository
-                .getCars()
-                .stream()
+        return carsRepository.getCars().stream()
                 .collect(Collectors.groupingBy(Car::getColor, Collectors.counting()))
                 .entrySet()
                 .stream()
@@ -49,19 +44,12 @@ public class CarsService {
         // WAZNE -> zeby mapa mogla przechowac posortowane wartosci musi byc LINKED
     }
 
-    public Map<String, Car> mostExpensiveByModel() {
-        var byModel = carsRepository
-                .getCars()
-                .stream()
-                .collect(Collectors.groupingBy(Car::getModel))
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        x -> x.getValue().stream().max(Comparator.comparing(Car::getPrice))
-                ));
-
-        return byModel
+    public Map<String, Car> getMostExpensiveCarByModel() {
+        return carsRepository.getCars().stream()
+                .collect(Collectors.groupingBy(
+                        Car::getModel,
+                        Collectors.maxBy(Comparator.comparing(Car::getPrice))
+                ))
                 .entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByKey(Comparator.reverseOrder()))
