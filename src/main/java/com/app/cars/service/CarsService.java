@@ -62,58 +62,45 @@ public class CarsService {
     }
 
     public void statsPriceMileage() {
-        var price = carsRepository
-                .getCars()
-                .stream()
+        var price = carsRepository.getCars().stream()
                 .collect(Collectors.summarizingDouble(x -> x.getPrice().doubleValue()));
 
         System.out.printf("Price -> MAX: %.3f, MIN: %.3f, AVG: %.3f%n", price.getMax(), price.getMin(), price.getAverage());
 
-        var mileage = carsRepository
-                .getCars()
-                .stream()
+        var mileage = carsRepository.getCars().stream()
                 .collect(Collectors.summarizingInt(Car::getMileage));
 
         System.out.printf("Mileage -> MAX: %d, MIN: %d, AVG: %.3f%n", mileage.getMax(), mileage.getMin(), mileage.getAverage());
     }
 
     public List<Car> maxPriceCar() {
-        var max = carsRepository
-                .getCars()
-                .stream()
+        var max = carsRepository.getCars().stream()
                 .map(Car::getPrice)
                 .max(BigDecimal::compareTo)
-                .orElseThrow();
+                .orElse(BigDecimal.ZERO);
 
-        return carsRepository
-                .getCars()
-                .stream()
-                .filter(x -> x.getPrice().equals(max))
+        return carsRepository.getCars().stream()
+                .filter(x -> x.getPrice().compareTo(max) == 0)
                 .toList();
     }
 
-    // TODO mam wrażenie że można to zrobić prościej, bez uzycia buildera
     public List<Car> getCarsWithSortedComponents() {
         return carsRepository
                 .getCars()
                 .stream()
-                .map(x ->
-                        Car
-                                .builder()
-                                .color(x.getColor())
-                                .mileage(x.getMileage())
-                                .price(x.getPrice())
-                                .model(x.getModel())
-                                .components(x.getComponents().stream().sorted().toList())
-                                .build())
+                .map(car -> Car.builder()
+                        .color(car.getColor())
+                        .mileage(car.getMileage())
+                        .price(car.getPrice())
+                        .model(car.getModel())
+                        .components(car.getComponents().stream().sorted().toList())
+                        .build())
                 .toList();
     }
 
     public void /*Map<String, List<Car>>*/ groupedByComponent() {
 
-        var components = carsRepository
-                .getCars()
-                .stream()
+        var components = carsRepository.getCars().stream()
                 .map(Car::getComponents)
                 .flatMap(List::stream)
                 .distinct()
