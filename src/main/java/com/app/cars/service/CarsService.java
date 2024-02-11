@@ -98,32 +98,22 @@ public class CarsService {
                 .toList();
     }
 
-    public void /*Map<String, List<Car>>*/ groupedByComponent() {
-
-        var components = carsRepository.getCars().stream()
-                .map(Car::getComponents)
-                .flatMap(List::stream)
-                .distinct()
-                .toList();
-
-        // TODO niby działa ale wygląda tragicznie, brak pomyslu jak to rozegrac streamami
-        Map<String, List<Car>> byComponents = new HashMap<>();
-
-        for (String component : components) {
-            for (Car car : carsRepository.getCars()) {
-                if (car.getComponents().contains(component)) {
-                    if (byComponents.containsKey(component)) {
-                        byComponents.get(component).add(car);
-                    } else {
-                        List<Car> cars = new ArrayList<>();
-                        cars.add(car);
-                        byComponents.put(component, cars);
-                    }
-                }
-            }
-        }
-
-        System.out.println(byComponents);
+    public Map<String, List<Car>> groupByComponentSortedByCount() {
+        return carsRepository.getCars().stream()
+                .flatMap(car -> car.getComponents().stream().map(component -> new AbstractMap.SimpleEntry<>(component, car)))
+                .collect(Collectors.groupingBy(
+                        AbstractMap.SimpleEntry::getKey,
+                        Collectors.mapping(AbstractMap.SimpleEntry::getValue, Collectors.toList())
+                ))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, List<Car>>comparingByValue(Comparator.comparingInt(List::size)).reversed())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue,
+                        LinkedHashMap::new
+                ));
     }
 
     public List<Car> getCarsWithinPriceRange(BigDecimal from, BigDecimal to) {
