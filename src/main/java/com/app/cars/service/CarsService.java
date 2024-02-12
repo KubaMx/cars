@@ -116,14 +116,13 @@ public class CarsService {
                 ));
     }
 
-    public List<Car> getCarsWithinPriceRange(BigDecimal from, BigDecimal to) {
+    public List<Car> getCarsWithinPriceRangeSortedByModel(BigDecimal from, BigDecimal to) {
         return carsRepository
                 .getCars()
                 .stream()
                 .filter(c -> c.getPrice().compareTo(from) >= 0 && c.getPrice().compareTo(to) <= 0)
                 .sorted(Comparator.comparing(Car::getModel))
                 .toList();
-
     }
 
     @Override
@@ -132,7 +131,7 @@ public class CarsService {
                 .getCars()
                 .stream()
                 .map(Object::toString)
-                .collect(Collectors.joining("\n"));
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 
 }
