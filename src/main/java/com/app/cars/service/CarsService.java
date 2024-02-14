@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -61,16 +62,40 @@ public class CarsService {
                 ));
     }
 
-    public void statsPriceMileage() {
-        var price = carsRepository.getCars().stream()
-                .collect(Collectors.summarizingDouble(x -> x.getPrice().doubleValue()));
+    public Map<String, BigDecimal> statsPrice() {
+        var cars = carsRepository.getCars();
 
-        System.out.printf("Price -> MAX: %.3f, MIN: %.3f, AVG: %.3f%n", price.getMax(), price.getMin(), price.getAverage());
+        BigDecimal minPrice = cars.stream()
+                .map(Car::getPrice)
+                .min(BigDecimal::compareTo)
+                .orElse(BigDecimal.ZERO);
 
+        BigDecimal maxPrice = cars.stream()
+                .map(Car::getPrice)
+                .max(BigDecimal::compareTo)
+                .orElse(BigDecimal.ZERO);
+
+        BigDecimal avgPrice = cars.stream()
+                .map(Car::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .divide(BigDecimal.valueOf(cars.size()), 2, RoundingMode.HALF_EVEN);
+
+        return Map.of(
+                "MIN", minPrice,
+                "MAX", maxPrice,
+                "AVG", avgPrice
+        );
+    }
+
+    public Map<String, Double> statsMileage() {
         var mileage = carsRepository.getCars().stream()
                 .collect(Collectors.summarizingInt(Car::getMileage));
 
-        System.out.printf("Mileage -> MAX: %d, MIN: %d, AVG: %.3f%n", mileage.getMax(), mileage.getMin(), mileage.getAverage());
+        return Map.of(
+                "MIN", mileage.getMin()*1.0,
+                "MAX", mileage.getMax()*1.0,
+                "AVG", mileage.getAverage()
+        );
     }
 
     public List<Car> maxPriceCar() {
