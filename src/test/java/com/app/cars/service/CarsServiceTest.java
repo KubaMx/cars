@@ -186,7 +186,61 @@ class CarsServiceTest {
         assertEquals(550.0, result.get("AVG"));
     }
 
+    @Test
+    void testMaxPriceCar() {
+        List<Car> result = carsService.maxPriceCar();
 
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("BMW", result.getFirst().getModel());
+    }
 
+    @Test
+    void testGetCarsWithSortedComponents() {
+        List<Car> result = carsService.getCarsWithSortedComponents();
 
+        assertNotNull(result);
+        assertEquals(3, result.size());
+
+        assertEquals(List.of("ABS", "ESP"), result.get(0).getComponents());
+        assertEquals(List.of("ABS", "ESP"), result.get(1).getComponents());
+        assertEquals(List.of("ABS", "AC", "ESP"), result.get(2).getComponents());
+    }
+
+    @Test
+    void testGroupByComponentSortedByCount() {
+        Map<String, List<Car>> result = carsService.groupByComponentSortedByCount();
+
+        assertNotNull(result);
+        assertEquals(3, result.size());
+
+        assertEquals(List.of("AUDI", "BMW", "TOYOTA"), result.get("ABS").stream().map(Car::getModel).toList());
+        assertEquals(List.of("AUDI", "BMW", "TOYOTA"), result.get("ESP").stream().map(Car::getModel).toList());
+        assertEquals(List.of("TOYOTA"), result.get("AC").stream().map(Car::getModel).toList());
+    }
+
+    @Test
+    void testGetCarsWithinPriceRangeSortedByModel() {
+        BigDecimal from = new BigDecimal(120000);
+        BigDecimal to = new BigDecimal(130000);
+
+        List<Car> result = carsService.getCarsWithinPriceRangeSortedByModel(from, to);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("AUDI", result.get(0).getModel());
+        assertEquals("BMW", result.get(1).getModel());
+    }
+
+    @Test
+    void testToString() {
+        String expected = "Car(model=AUDI, price=120000, color=BLACK, mileage=1200, components=[ABS, ESP])\n" +
+                "Car(model=BMW, price=130000, color=BLUE, mileage=200, components=[ABS, ESP])\n" +
+                "Car(model=TOYOTA, price=100000, color=RED, mileage=250, components=[ABS, ESP, AC])";
+
+        String result = carsService.toString();
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+    }
 }
