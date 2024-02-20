@@ -1,7 +1,7 @@
 package com.app.cars.service;
 
-import com.app.cars.persistence.model.Car;
-import com.app.cars.persistence.model.Color;
+import com.app.cars.persistence.model.CarEntity;
+import com.app.cars.persistence.model.type.Color;
 import com.app.cars.persistence.repository.CarsRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +18,13 @@ public class CarsService {
     private final CarsRepository carsRepository;
 
     // ta metoda ma tak działać! jest to zgodne z treścią zadania
-    public List<Car> sortBy(Comparator<Car> compareBy, SortingOrder sortingOrder) {
+    public List<CarEntity> sortBy(Comparator<CarEntity> compareBy, SortingOrder sortingOrder) {
         return carsRepository.getCars().stream()
                 .sorted(sortingOrder == SortingOrder.ASCENDING ? compareBy : compareBy.reversed())
                 .toList();
     }
 
-    public List<Car> mileageGreaterThan(int mileage) {
+    public List<CarEntity> mileageGreaterThan(int mileage) {
         return carsRepository.getCars().stream()
                 .filter(car -> car.getMileage() > mileage)
                 .toList();
@@ -32,7 +32,7 @@ public class CarsService {
 
     public Map<Color, Long> groupByColor() {
         return carsRepository.getCars().stream()
-                .collect(Collectors.groupingBy(Car::getColor, Collectors.counting()))
+                .collect(Collectors.groupingBy(CarEntity::getColor, Collectors.counting()))
                 .entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
@@ -45,11 +45,11 @@ public class CarsService {
         // WAZNE -> zeby mapa mogla przechowac posortowane wartosci musi byc LINKED
     }
 
-    public Map<String, Car> getMostExpensiveCarByModel() {
+    public Map<String, CarEntity> getMostExpensiveCarByModel() {
         return carsRepository.getCars().stream()
                 .collect(Collectors.groupingBy(
-                        Car::getModel,
-                        Collectors.maxBy(Comparator.comparing(Car::getPrice))
+                        CarEntity::getModel,
+                        Collectors.maxBy(Comparator.comparing(CarEntity::getPrice))
                 ))
                 .entrySet()
                 .stream()
@@ -66,17 +66,17 @@ public class CarsService {
         var cars = carsRepository.getCars();
 
         BigDecimal minPrice = cars.stream()
-                .map(Car::getPrice)
+                .map(CarEntity::getPrice)
                 .min(BigDecimal::compareTo)
                 .orElse(BigDecimal.ZERO);
 
         BigDecimal maxPrice = cars.stream()
-                .map(Car::getPrice)
+                .map(CarEntity::getPrice)
                 .max(BigDecimal::compareTo)
                 .orElse(BigDecimal.ZERO);
 
         BigDecimal avgPrice = cars.stream()
-                .map(Car::getPrice)
+                .map(CarEntity::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .divide(BigDecimal.valueOf(cars.size()), 2, RoundingMode.HALF_EVEN);
 
@@ -89,7 +89,7 @@ public class CarsService {
 
     public Map<String, Double> statsMileage() {
         var mileage = carsRepository.getCars().stream()
-                .collect(Collectors.summarizingInt(Car::getMileage));
+                .collect(Collectors.summarizingInt(CarEntity::getMileage));
 
         return Map.of(
                 "MIN", mileage.getMin()*1.0,
@@ -98,9 +98,9 @@ public class CarsService {
         );
     }
 
-    public List<Car> maxPriceCar() {
+    public List<CarEntity> maxPriceCar() {
         var max = carsRepository.getCars().stream()
-                .map(Car::getPrice)
+                .map(CarEntity::getPrice)
                 .max(BigDecimal::compareTo)
                 .orElse(BigDecimal.ZERO);
 
@@ -109,11 +109,11 @@ public class CarsService {
                 .toList();
     }
 
-    public List<Car> getCarsWithSortedComponents() {
+    public List<CarEntity> getCarsWithSortedComponents() {
         return carsRepository
                 .getCars()
                 .stream()
-                .map(car -> Car.builder()
+                .map(car -> CarEntity.builder()
                         .color(car.getColor())
                         .mileage(car.getMileage())
                         .price(car.getPrice())
@@ -123,7 +123,7 @@ public class CarsService {
                 .toList();
     }
 
-    public Map<String, List<Car>> groupByComponentSortedByCount() {
+    public Map<String, List<CarEntity>> groupByComponentSortedByCount() {
         return carsRepository.getCars().stream()
                 .flatMap(car -> car.getComponents().stream().map(component -> new AbstractMap.SimpleEntry<>(component, car)))
                 .collect(Collectors.groupingBy(
@@ -132,7 +132,7 @@ public class CarsService {
                 ))
                 .entrySet()
                 .stream()
-                .sorted(Map.Entry.<String, List<Car>>comparingByValue(Comparator.comparingInt(List::size)).reversed())
+                .sorted(Map.Entry.<String, List<CarEntity>>comparingByValue(Comparator.comparingInt(List::size)).reversed())
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
@@ -141,12 +141,12 @@ public class CarsService {
                 ));
     }
 
-    public List<Car> getCarsWithinPriceRangeSortedByModel(BigDecimal from, BigDecimal to) {
+    public List<CarEntity> getCarsWithinPriceRangeSortedByModel(BigDecimal from, BigDecimal to) {
         return carsRepository
                 .getCars()
                 .stream()
                 .filter(c -> c.getPrice().compareTo(from) >= 0 && c.getPrice().compareTo(to) <= 0)
-                .sorted(Comparator.comparing(Car::getModel))
+                .sorted(Comparator.comparing(CarEntity::getModel))
                 .toList();
     }
 
