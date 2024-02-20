@@ -1,9 +1,8 @@
 package com.app.cars.persistence.repository;
 
 import com.app.cars.converter.CarJsonConverter;
-import com.app.cars.persistence.model.Car;
-import com.app.cars.persistence.model.Color;
-import com.app.cars.persistence.repository.CarsRepositoryImpl;
+import com.app.cars.persistence.model.CarEntity;
+import com.app.cars.persistence.model.type.Color;
 import com.app.cars.persistence.repository.exception.CarsRepositoryException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,14 +31,14 @@ class CarsRepositoryImplTest {
     @Test
     void testGetCarsSuccess() {
 
-        List<Car> mockCarsList = List.of(
-                Car.of("AUDI", new BigDecimal(120000), Color.BLACK, 1200, List.of("ABS", "ESP")),
-                Car.of("BMW", new BigDecimal(130000), Color.BLUE, 200, List.of("ABS", "ESP"))
+        List<CarEntity> mockCarsList = List.of(
+                CarEntity.of("AUDI", new BigDecimal(120000), Color.BLACK, 1200, List.of("ABS", "ESP")),
+                CarEntity.of("BMW", new BigDecimal(130000), Color.BLUE, 200, List.of("ABS", "ESP"))
         );
 
         when(jsonConverterMock.from()).thenReturn(Optional.of(mockCarsList));
 
-        List<Car> result = carsRepository.getCars();
+        List<CarEntity> result = carsRepository.getCars();
 
         assertNotNull(result);
         assertEquals(2, result.size());

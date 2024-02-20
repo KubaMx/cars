@@ -1,18 +1,18 @@
 package com.app.cars.validator;
 
-import com.app.cars.persistence.model.Car;
+import com.app.cars.persistence.model.CarEntity;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public final class CarValidator implements Validator<Car> {
+public final class CarValidator implements Validator<CarEntity> {
 
     @Override
-    public void validate(Car car) {
+    public void validate(CarEntity car) {
         validateCar(car);
     }
 
-    private void validateCar(Car car) {
+    private void validateCar(CarEntity car) {
         ensureCarNotNull(car);
         validateCarModel(car);
         validateCarColor(car);
@@ -21,13 +21,13 @@ public final class CarValidator implements Validator<Car> {
         validateCarComponents(car);
     }
 
-    private void ensureCarNotNull(Car car) {
+    private void ensureCarNotNull(CarEntity car) {
         if (car == null) {
             throw new IllegalArgumentException("Car is null");
         }
     }
 
-    private void validateCarModel(Car car) {
+    private void validateCarModel(CarEntity car) {
         String model = car.getModel();
 
         if (model == null || !isValidCarModelFormat(model)) {
@@ -39,26 +39,26 @@ public final class CarValidator implements Validator<Car> {
         return Validator.validateExpression(model, "([A-Z]+(\\s)*)+");
     }
 
-    private void validateCarColor(Car car) {
+    private void validateCarColor(CarEntity car) {
         if (car.getColor() == null) {
             throw new IllegalArgumentException("Color is null");
         }
     }
 
-    private void validatePrice(Car car) {
+    private void validatePrice(CarEntity car) {
         BigDecimal price = car.getPrice();
         if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Price is null or not correct");
         }
     }
 
-    private void validateCarMileage(Car car) {
+    private void validateCarMileage(CarEntity car) {
         if (car.getMileage() < 0) {
             throw new IllegalArgumentException("Mileage is not correct");
         }
     }
 
-    private void validateCarComponents(Car car) {
+    private void validateCarComponents(CarEntity car) {
         List<String> components = car.getComponents();
 
         if (components == null || components.isEmpty()) {

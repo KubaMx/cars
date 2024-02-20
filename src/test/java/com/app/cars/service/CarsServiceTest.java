@@ -1,7 +1,7 @@
 package com.app.cars.service;
 
-import com.app.cars.persistence.model.Car;
-import com.app.cars.persistence.model.Color;
+import com.app.cars.persistence.model.CarEntity;
+import com.app.cars.persistence.model.type.Color;
 import com.app.cars.persistence.repository.CarsRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,10 +26,10 @@ class CarsServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        List<Car> mockCarsList = List.of(
-                Car.of("AUDI", new BigDecimal(120000), Color.BLACK, 1200, List.of("ABS", "ESP")),
-                Car.of("BMW", new BigDecimal(130000), Color.BLUE, 200, List.of("ABS", "ESP")),
-                Car.of("TOYOTA", new BigDecimal(100000), Color.RED, 250, List.of("ABS", "ESP", "AC"))
+        List<CarEntity> mockCarsList = List.of(
+                CarEntity.of("AUDI", new BigDecimal(120000), Color.BLACK, 1200, List.of("ABS", "ESP")),
+                CarEntity.of("BMW", new BigDecimal(130000), Color.BLUE, 200, List.of("ABS", "ESP")),
+                CarEntity.of("TOYOTA", new BigDecimal(100000), Color.RED, 250, List.of("ABS", "ESP", "AC"))
         );
 
         when(carsRepositoryMock.getCars()).thenReturn(mockCarsList);
@@ -39,7 +39,7 @@ class CarsServiceTest {
 
     @Test
     void testSortByPriceAscending() {
-        List<Car> sortedCars = carsService.sortBy(Comparator.comparing(Car::getPrice), SortingOrder.ASCENDING);
+        List<CarEntity> sortedCars = carsService.sortBy(Comparator.comparing(CarEntity::getPrice), SortingOrder.ASCENDING);
 
         assertNotNull(sortedCars);
         assertEquals(3, sortedCars.size());
@@ -50,7 +50,7 @@ class CarsServiceTest {
 
     @Test
     void testSortByPriceDescending() {
-        List<Car> sortedCars = carsService.sortBy(Comparator.comparing(Car::getPrice), SortingOrder.DESCENDING);
+        List<CarEntity> sortedCars = carsService.sortBy(Comparator.comparing(CarEntity::getPrice), SortingOrder.DESCENDING);
 
         assertNotNull(sortedCars);
         assertEquals(3, sortedCars.size());
@@ -61,7 +61,7 @@ class CarsServiceTest {
 
     @Test
     void testSortByMileageAscending() {
-        List<Car> sortedCars = carsService.sortBy(Comparator.comparing(Car::getMileage), SortingOrder.ASCENDING);
+        List<CarEntity> sortedCars = carsService.sortBy(Comparator.comparing(CarEntity::getMileage), SortingOrder.ASCENDING);
 
         assertNotNull(sortedCars);
         assertEquals(3, sortedCars.size());
@@ -72,7 +72,7 @@ class CarsServiceTest {
 
     @Test
     void testSortByMileageDescending() {
-        List<Car> sortedCars = carsService.sortBy(Comparator.comparing(Car::getMileage), SortingOrder.DESCENDING);
+        List<CarEntity> sortedCars = carsService.sortBy(Comparator.comparing(CarEntity::getMileage), SortingOrder.DESCENDING);
 
         assertNotNull(sortedCars);
         assertEquals(3, sortedCars.size());
@@ -83,7 +83,7 @@ class CarsServiceTest {
 
     @Test
     void testSortByModelAscending() {
-        List<Car> sortedCars = carsService.sortBy(Comparator.comparing(Car::getModel), SortingOrder.ASCENDING);
+        List<CarEntity> sortedCars = carsService.sortBy(Comparator.comparing(CarEntity::getModel), SortingOrder.ASCENDING);
 
         assertNotNull(sortedCars);
         assertEquals(3, sortedCars.size());
@@ -94,7 +94,7 @@ class CarsServiceTest {
 
     @Test
     void testSortByModelDescending() {
-        List<Car> sortedCars = carsService.sortBy(Comparator.comparing(Car::getModel), SortingOrder.DESCENDING);
+        List<CarEntity> sortedCars = carsService.sortBy(Comparator.comparing(CarEntity::getModel), SortingOrder.DESCENDING);
 
         assertNotNull(sortedCars);
         assertEquals(3, sortedCars.size());
@@ -105,7 +105,7 @@ class CarsServiceTest {
 
     @Test
     void testSortByColorAscending() {
-        List<Car> sortedCars = carsService.sortBy(Comparator.comparing(Car::getColor), SortingOrder.ASCENDING);
+        List<CarEntity> sortedCars = carsService.sortBy(Comparator.comparing(CarEntity::getColor), SortingOrder.ASCENDING);
 
         assertNotNull(sortedCars);
         assertEquals(3, sortedCars.size());
@@ -116,7 +116,7 @@ class CarsServiceTest {
 
     @Test
     void testSortByColorDescending() {
-        List<Car> sortedCars = carsService.sortBy(Comparator.comparing(Car::getColor), SortingOrder.DESCENDING);
+        List<CarEntity> sortedCars = carsService.sortBy(Comparator.comparing(CarEntity::getColor), SortingOrder.DESCENDING);
 
         assertNotNull(sortedCars);
         assertEquals(3, sortedCars.size());
@@ -129,7 +129,7 @@ class CarsServiceTest {
     void testMileageGreaterThan() {
         int mileageThreshold = 1000;
 
-        List<Car> result = carsService.mileageGreaterThan(mileageThreshold);
+        List<CarEntity> result = carsService.mileageGreaterThan(mileageThreshold);
 
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -152,7 +152,7 @@ class CarsServiceTest {
 
     @Test
     void testGetMostExpensiveCarByModel() {
-        Map<String, Car> result = carsService.getMostExpensiveCarByModel();
+        Map<String, CarEntity> result = carsService.getMostExpensiveCarByModel();
 
         assertNotNull(result);
         assertEquals(3, result.size());
@@ -188,7 +188,7 @@ class CarsServiceTest {
 
     @Test
     void testMaxPriceCar() {
-        List<Car> result = carsService.maxPriceCar();
+        List<CarEntity> result = carsService.maxPriceCar();
 
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -197,7 +197,7 @@ class CarsServiceTest {
 
     @Test
     void testGetCarsWithSortedComponents() {
-        List<Car> result = carsService.getCarsWithSortedComponents();
+        List<CarEntity> result = carsService.getCarsWithSortedComponents();
 
         assertNotNull(result);
         assertEquals(3, result.size());
@@ -209,14 +209,14 @@ class CarsServiceTest {
 
     @Test
     void testGroupByComponentSortedByCount() {
-        Map<String, List<Car>> result = carsService.groupByComponentSortedByCount();
+        Map<String, List<CarEntity>> result = carsService.groupByComponentSortedByCount();
 
         assertNotNull(result);
         assertEquals(3, result.size());
 
-        assertEquals(List.of("AUDI", "BMW", "TOYOTA"), result.get("ABS").stream().map(Car::getModel).toList());
-        assertEquals(List.of("AUDI", "BMW", "TOYOTA"), result.get("ESP").stream().map(Car::getModel).toList());
-        assertEquals(List.of("TOYOTA"), result.get("AC").stream().map(Car::getModel).toList());
+        assertEquals(List.of("AUDI", "BMW", "TOYOTA"), result.get("ABS").stream().map(CarEntity::getModel).toList());
+        assertEquals(List.of("AUDI", "BMW", "TOYOTA"), result.get("ESP").stream().map(CarEntity::getModel).toList());
+        assertEquals(List.of("TOYOTA"), result.get("AC").stream().map(CarEntity::getModel).toList());
     }
 
     @Test
@@ -224,7 +224,7 @@ class CarsServiceTest {
         BigDecimal from = new BigDecimal(120000);
         BigDecimal to = new BigDecimal(130000);
 
-        List<Car> result = carsService.getCarsWithinPriceRangeSortedByModel(from, to);
+        List<CarEntity> result = carsService.getCarsWithinPriceRangeSortedByModel(from, to);
 
         assertNotNull(result);
         assertEquals(2, result.size());

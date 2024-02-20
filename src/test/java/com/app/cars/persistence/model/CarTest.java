@@ -1,7 +1,6 @@
 package com.app.cars.persistence.model;
 
-import com.app.cars.persistence.model.Car;
-import com.app.cars.persistence.model.Color;
+import com.app.cars.persistence.model.type.Color;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +18,7 @@ class CarTest {
         int mileage = 10000;
         List<String> components = List.of("GPS", "AC");
 
-        Car car = Car.of(model, price, Color.BLACK, mileage, components);
+        CarEntity car = CarEntity.of(model, price, Color.BLACK, mileage, components);
 
         assertNotNull(car);
         assertEquals(model, car.getModel());
@@ -39,7 +38,7 @@ class CarTest {
         try {
            /* assertThrows(IllegalArgumentException.class, () ->
                     Car.of(model, price, Color.RED, mileage, components));*/
-            Car.of(model, price, Color.RED, mileage, components);
+            CarEntity.of(model, price, Color.RED, mileage, components);
         } catch (Exception e) {
             assertEquals("Model is null or not correct", e.getMessage());
         }

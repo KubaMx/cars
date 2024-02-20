@@ -1,4 +1,4 @@
-package com.app.cars.persistence.model;
+package com.app.cars.persistence.model.type;
 
 public enum Color {
     BLACK,
