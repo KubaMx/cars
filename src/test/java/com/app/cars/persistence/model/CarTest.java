@@ -1,5 +1,7 @@
-package com.app.cars.model;
+package com.app.cars.persistence.model;
 
+import com.app.cars.persistence.model.Car;
+import com.app.cars.persistence.model.Color;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

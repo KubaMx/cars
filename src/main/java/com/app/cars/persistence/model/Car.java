@@ -1,4 +1,4 @@
-package com.app.cars.model;
+package com.app.cars.persistence.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

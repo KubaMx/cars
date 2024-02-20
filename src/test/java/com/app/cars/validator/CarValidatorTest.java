@@ -1,7 +1,7 @@
 package com.app.cars.validator;
 
-import com.app.cars.model.Car;
-import com.app.cars.model.Color;
+import com.app.cars.persistence.model.Car;
+import com.app.cars.persistence.model.Color;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

@@ -1,8 +1,8 @@
 package com.app.cars.service;
 
-import com.app.cars.model.Car;
-import com.app.cars.model.Color;
-import com.app.cars.repository.CarsRepository;
+import com.app.cars.persistence.model.Car;
+import com.app.cars.persistence.model.Color;
+import com.app.cars.persistence.repository.CarsRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
