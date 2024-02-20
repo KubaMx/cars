@@ -1,9 +1,10 @@
-package com.app.cars.repository;
+package com.app.cars.persistence.repository;
 
 import com.app.cars.converter.CarJsonConverter;
-import com.app.cars.model.Car;
-import com.app.cars.model.Color;
-import com.app.cars.repository.exception.CarsRepositoryException;
+import com.app.cars.persistence.model.Car;
+import com.app.cars.persistence.model.Color;
+import com.app.cars.persistence.repository.CarsRepositoryImpl;
+import com.app.cars.persistence.repository.exception.CarsRepositoryException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

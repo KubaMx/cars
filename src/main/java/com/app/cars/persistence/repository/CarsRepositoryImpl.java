@@ -1,8 +1,8 @@
-package com.app.cars.repository;
+package com.app.cars.persistence.repository;
 
 import com.app.cars.converter.JsonConverter;
-import com.app.cars.model.Car;
-import com.app.cars.repository.exception.CarsRepositoryException;
+import com.app.cars.persistence.model.Car;
+import com.app.cars.persistence.repository.exception.CarsRepositoryException;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

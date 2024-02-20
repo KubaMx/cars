@@ -1,8 +1,8 @@
 package com.app.cars.service;
 
-import com.app.cars.model.Car;
-import com.app.cars.model.Color;
-import com.app.cars.repository.CarsRepositoryImpl;
+import com.app.cars.persistence.model.Car;
+import com.app.cars.persistence.model.Color;
+import com.app.cars.persistence.repository.CarsRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

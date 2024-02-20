@@ -1,6 +1,6 @@
 package com.app.cars.converter;
 
-import com.app.cars.model.Car;
+import com.app.cars.persistence.model.Car;
 
 import java.util.List;
 

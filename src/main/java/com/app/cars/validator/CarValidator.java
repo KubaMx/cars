@@ -1,6 +1,6 @@
 package com.app.cars.validator;
 
-import com.app.cars.model.Car;
+import com.app.cars.persistence.model.Car;
 
 import java.math.BigDecimal;
 import java.util.List;
