@@ -3,6 +3,7 @@ package com.app.cars.persistence.model;
 import com.app.cars.persistence.model.type.Color;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
+@Getter
 @Entity
 @Table(name="cars")
 public class CarEntity extends BaseEntity {
