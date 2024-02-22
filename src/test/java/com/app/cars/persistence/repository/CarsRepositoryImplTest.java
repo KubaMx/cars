@@ -38,7 +38,7 @@ class CarsRepositoryImplTest {
 
         when(jsonConverterMock.from()).thenReturn(Optional.of(mockCarsList));
 
-        List<CarEntity> result = carsRepository.getCars();
+        List<CarEntity> result = carsRepository.findAll();
 
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -52,7 +52,7 @@ class CarsRepositoryImplTest {
     void testGetCarsFailure() {
         when(jsonConverterMock.from()).thenReturn(Optional.empty());
 
-        assertThrows(CarsRepositoryException.class, () -> carsRepository.getCars());
+        assertThrows(CarsRepositoryException.class, () -> carsRepository.findAll());
 
         verify(jsonConverterMock, times(1)).from();
         verifyNoMoreInteractions(jsonConverterMock);

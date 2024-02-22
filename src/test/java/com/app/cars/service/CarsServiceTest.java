@@ -32,7 +32,7 @@ class CarsServiceTest {
                 CarEntity.of("TOYOTA", new BigDecimal(100000), Color.RED, 250, List.of("ABS", "ESP", "AC"))
         );
 
-        when(carsRepositoryMock.getCars()).thenReturn(mockCarsList);
+        when(carsRepositoryMock.findAll()).thenReturn(mockCarsList);
 
         carsService = new CarsService(carsRepositoryMock);
     }
