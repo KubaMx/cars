@@ -3,6 +3,7 @@ package com.app.cars.service;
 import com.app.cars.persistence.model.CarEntity;
 import com.app.cars.persistence.model.type.Color;
 import com.app.cars.persistence.repository.CarsEntityRepository;
+import com.app.cars.service.type.SortingOrder;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.app.cars.service;
+package com.app.cars.service.type;
 
 public enum SortingOrder {
     ASCENDING,
