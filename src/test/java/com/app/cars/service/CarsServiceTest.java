@@ -3,6 +3,7 @@ package com.app.cars.service;
 import com.app.cars.persistence.model.CarEntity;
 import com.app.cars.persistence.model.type.Color;
 import com.app.cars.persistence.repository.CarsRepositoryImpl;
+import com.app.cars.service.type.SortingOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

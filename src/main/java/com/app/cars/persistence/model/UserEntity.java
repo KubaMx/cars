@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Entity
 @Table(name = "users")
-public class UserEntity extends BaseEntity{
+public class UserEntity extends BaseEntity {
     private String username;
     private String email;
     private Integer age;
@@ -23,4 +23,16 @@ public class UserEntity extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    public UserEntity withPassword(String newPassword) {
+        return UserEntity
+                .builder()
+                .id(id)
+                .username(username)
+                .email(email)
+                .age(age)
+                .password(newPassword)
+                .enabled(enabled)
+                .role(role)
+                .build();
+    }
 }
