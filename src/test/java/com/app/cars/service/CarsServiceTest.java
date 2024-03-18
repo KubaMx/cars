@@ -3,6 +3,7 @@ package com.app.cars.service;
 import com.app.cars.persistence.model.CarEntity;
 import com.app.cars.persistence.model.type.Color;
 import com.app.cars.persistence.repository.CarsEntityRepository;
+import com.app.cars.service.impl.CarsService1;
 import com.app.cars.service.type.SortingOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ class CarsServiceTest {
     @Mock
     private CarsEntityRepository carsEntityRepository;
 
-    private CarsService carsService;
+    private CarsService1 carsService;
 
     @BeforeEach
     void setUp() {
@@ -35,7 +36,7 @@ class CarsServiceTest {
 
         when(carsEntityRepository.findAll()).thenReturn(mockCarsList);
 
-        carsService = new CarsService(carsEntityRepository);
+        carsService = new CarsService1(carsEntityRepository);
     }
 
     @Test

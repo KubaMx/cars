@@ -28,6 +28,6 @@ public class CarEntity extends BaseEntity {
     public static CarEntity of(String model, BigDecimal price, Color color, int mileage, List<String> components) {
         return new CarEntity(model, price, color, mileage, components);
 
-        //TODO walidacja
+        //TODO walidacja btw. na tym etapie ta metoda jest raczej zbędna
     }
 }
