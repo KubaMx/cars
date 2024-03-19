@@ -15,7 +15,10 @@ public class CarsServiceImpl implements CarsService {
 
     @Override
     public Long registerCar(CreateCarDto createCarDto) {
+        var carToInsert = createCarDto.toCarEntity();
 
-        return null;
+        var insertedCar = carsEntityRepository.save(carToInsert);
+
+        return insertedCar.getId();
     }
 }
