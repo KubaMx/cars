@@ -8,7 +8,7 @@ import java.util.List;
 
 public record CreateCarDto(
         String model,
-        BigDecimal price,
+        String price,
         Color color,
         int mileage,
         List<String> components
@@ -16,7 +16,7 @@ public record CreateCarDto(
     public CarEntity toCarEntity() {
         return CarEntity.builder()
                 .model(model)
-                .price(price)
+                .price(new BigDecimal(price))
                 .color(color)
                 .mileage(mileage)
                 .components(components)
