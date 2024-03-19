@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class CarsServiceImpl implements CarsService {
-    CarsEntityRepository carsEntityRepository;
+    private final CarsEntityRepository carsEntityRepository;
 
     @Override
     public Long registerCar(CreateCarDto createCarDto) {
