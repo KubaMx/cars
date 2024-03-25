@@ -3,7 +3,9 @@ package com.app.cars.service.impl;
 import com.app.cars.persistence.repository.UserEntityRepository;
 import com.app.cars.service.UsersService;
 import com.app.cars.service.dto.CreateUserDto;
+import com.app.cars.service.dto.UserActivationDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UsersServiceImpl implements UsersService {
     private final PasswordEncoder passwordEncoder;
     private final UserEntityRepository userEntityRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     public Long registerUser(CreateUserDto createUserDto) {
@@ -28,7 +31,7 @@ public class UsersServiceImpl implements UsersService {
             throw new IllegalArgumentException("Username already exists");
         }
 
-        if(userEntityRepository.findByEmail(createUserDto.email()).isPresent()) {
+        if (userEntityRepository.findByEmail(createUserDto.email()).isPresent()) {
             throw new IllegalArgumentException("Email already exists");
         }
 
@@ -38,6 +41,8 @@ public class UsersServiceImpl implements UsersService {
 
         var insertedUser = userEntityRepository.save(userToInsert);
 
-        return insertedUser.getId();
+        var id = insertedUser.getId();
+        applicationEventPublisher.publishEvent(new UserActivationDto(id));
+        return id;
     }
 }
