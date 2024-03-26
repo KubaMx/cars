@@ -18,3 +18,6 @@ spring:
     properties:
       mail.smtps.auth: true
       mail.starttls.enable: true
+
+km-config:
+  activation-mail-expiration-time: 300000000000
