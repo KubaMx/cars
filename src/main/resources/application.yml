@@ -14,10 +14,11 @@ spring:
     username: testcars630@gmail.com
     password: testcars630!@#
     port: 587
-    protocol: smt.
+    protocol: smtp
     properties:
-      mail.smtps.auth: true
-      mail.starttls.enable: true
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.from.email: testcars630@gmail.com
 
 km-config:
   activation-mail-expiration-time: 300000000000

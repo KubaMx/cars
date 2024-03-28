@@ -5,13 +5,15 @@ import com.app.cars.persistence.repository.UserEntityRepository;
 import com.app.cars.persistence.repository.VerificationTokenEntityRepository;
 import com.app.cars.service.EmailService;
 import com.app.cars.service.dto.UserActivationDto;
-import com.fasterxml.jackson.datatype.jsr310.ser.ZoneIdSerializer;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -22,7 +24,7 @@ import java.util.UUID;
 public class UserActivationListener {
 
     @Value("${km-config.activation-mail-expiration-time}")
-    private Long activationMailExpirationTime
+    private Long activationMailExpirationTime;
 
     private final UserEntityRepository userEntityRepository;
     private final VerificationTokenEntityRepository verificationTokenEntityRepository;
@@ -30,7 +32,8 @@ public class UserActivationListener {
 
     @Async
     @EventListener
-    @Transactional
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void sendActivationMail(UserActivationDto userActivationDto) {
         var userToActivate = userEntityRepository
                 .findById(userActivationDto.userId())
@@ -58,5 +61,4 @@ public class UserActivationListener {
                 "Use activation code: " + token
         );
     }
-
 }
