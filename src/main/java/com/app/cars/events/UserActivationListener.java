@@ -15,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.UUID;
 
 @Component
@@ -41,10 +39,7 @@ public class UserActivationListener {
 
         var token = UUID.randomUUID().toString().replaceAll("\\W", "");
 
-        var timestamp = LocalDateTime
-                .now()
-                .toInstant(ZoneOffset.UTC)
-                .getNano() + activationMailExpirationTime;
+        var timestamp = System.nanoTime() + activationMailExpirationTime;
 
         var verificationToken = VerificationTokenEntity
                 .builder()
