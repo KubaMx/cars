@@ -2,6 +2,7 @@ package com.app.cars.persistence.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -18,6 +19,7 @@ public class VerificationTokenEntity extends BaseEntity{
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", unique = true)
+    @Getter
     private UserEntity user;
 
     public Optional<UserEntity> validate() {
