@@ -37,6 +37,19 @@ public class UserEntity extends BaseEntity {
                 .build();
     }
 
+    public UserEntity activate() {
+        return UserEntity
+                .builder()
+                .id(id)
+                .username(username)
+                .email(email)
+                .age(age)
+                .password(password)
+                .enabled(true)
+                .role(role)
+                .build();
+    }
+
     public UserEmailDto toUserEmailDto() {
         return new UserEmailDto(email);
     }
