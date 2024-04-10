@@ -23,6 +23,7 @@ public class VerificationTokenEntity extends BaseEntity{
     private UserEntity user;
 
     public Optional<UserEntity> validate() {
-        return Optional.ofNullable(timestamp >= System.nanoTime() ? user : null);
+        var currentTime = System.nanoTime();
+        return Optional.ofNullable(timestamp >= currentTime ? user : null);
     }
 }
