@@ -11,8 +11,8 @@ spring:
     password: user1234
   mail:
     host: smtp.gmail.com
-    username: testcars630@gmail.com
-    password: testcars630!@#
+    username: testowy2.kmprograms@gmail.com
+    password: jjtdkjurrfqdgqxu
     port: 587
     protocol: smtp
     properties:
@@ -22,3 +22,4 @@ spring:
 
 km-config:
   activation-mail-expiration-time: 300000000000
+  #activation-mail-expiration-time: 5000000000
