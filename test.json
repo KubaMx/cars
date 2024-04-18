@@ -1,0 +1,21 @@
+[
+  {
+    "model": "TOYOTA",
+    "price": 25000.00,
+    "color": "BLUE",
+    "mileage": 50000,
+    "components": [
+      "AC",
+      "NAVI"
+    ]
+  },
+  {
+    "model": "HONDA",
+    "price": 18000.00,
+    "color": "RED",
+    "mileage": 30000,
+    "components": [
+      "AC"
+    ]
+  }
+]
