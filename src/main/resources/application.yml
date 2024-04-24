@@ -21,5 +21,13 @@ spring:
       mail.from.email: testcars630@gmail.com
 
 km-config:
-  activation-mail-expiration-time: 300000000000
-  #activation-mail-expiration-time: 5000000000
+   email:
+    activation-mail-expiration-time: 300000000000
+    #activation-mail-expiration-time: 5000000000
+   tokens:
+     access:
+       expiration_time_ms: 300000
+     refresh:
+       expiration_time_ms: 30000000
+       access_token_expiration_time_ms_property: 'access_token_expiration_time_ms_property'
+     prefix: 'Bearer '
