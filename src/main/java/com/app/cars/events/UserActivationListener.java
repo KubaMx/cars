@@ -21,7 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserActivationListener {
 
-    @Value("${km-config.activation-mail-expiration-time}")
+    @Value("${km-config.email.activation-mail-expiration-time}")
     private Long activationMailExpirationTime;
 
     private final UserEntityRepository userEntityRepository;
