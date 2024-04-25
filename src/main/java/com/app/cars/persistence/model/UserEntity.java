@@ -7,6 +7,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -19,6 +20,7 @@ public class UserEntity extends BaseEntity {
     private String username;
     private String email;
     private Integer age;
+    @Getter
     private String password;
     private boolean enabled;
     @Enumerated(EnumType.STRING)
