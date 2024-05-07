@@ -1,6 +1,7 @@
 package com.app.cars.persistence.model;
 
 import com.app.cars.persistence.model.type.Role;
+import com.app.cars.security.dto.UserDetailsDto;
 import com.app.cars.service.dto.UserEmailDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -54,5 +55,9 @@ public class UserEntity extends BaseEntity {
 
     public UserEmailDto toUserEmailDto() {
         return new UserEmailDto(email);
+    }
+
+    public UserDetailsDto toUserDetailsDto() {
+        return new UserDetailsDto(username, password, enabled, role.name());
     }
 }
