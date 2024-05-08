@@ -1,17 +1,19 @@
 package com.app.cars.security.filter;
 
 import com.app.cars.security.dto.AuthenticationDto;
+import com.app.cars.security.service.TokensService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
@@ -22,11 +24,11 @@ import java.util.Collections;
 // domyslne URI mozna zmienic w konstruktorze klasy
 public class AppAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final TokenService tokenService;
+    private final TokensService tokensService;
     private final AuthenticationManager authenticationManager;
 
-    public AppAuthenticationFilter(TokenService tokenService, AuthenticationManager authenticationManager) {
-        this.tokenService = tokenService;
+    public AppAuthenticationFilter(TokensService tokensService, AuthenticationManager authenticationManager) {
+        this.tokensService = tokensService;
         this.authenticationManager = authenticationManager;
         //setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", "POST")); -> przykładowa zmiana URI
 
@@ -46,7 +48,30 @@ public class AppAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        super.successfulAuthentication(request, response, chain, authResult);
+    protected void successfulAuthentication(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain chain,
+            Authentication authResult) throws IOException, ServletException {
+
+        var tokens = tokensService.generateToken(authResult);
+
+        Cookie accessTokenCookie = new Cookie("AccessToken", tokens.accessToken());
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setMaxAge(86400);
+
+        Cookie refreshTokenCookie = new Cookie("RefreshToken", tokens.refreshToken());
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setMaxAge(86400);
+
+        response.addCookie(accessTokenCookie);
+        response.addCookie(refreshTokenCookie);
+
+        // mozna tez zwrocic tokeny w JSON Body (ponizej) lub jako header
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.getWriter().write(new ObjectMapper().writeValueAsString(tokens));
+        response.getWriter().flush();
+        response.getWriter().close();
+        
     }
 }

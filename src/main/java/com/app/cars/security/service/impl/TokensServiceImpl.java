@@ -1,13 +1,13 @@
 package com.app.cars.security.service.impl;
 
 import com.app.cars.persistence.repository.UserEntityRepository;
-import com.app.cars.security.dto.AuthenticationDto;
 import com.app.cars.security.dto.RefreshTokenDto;
 import com.app.cars.security.dto.TokensDto;
 import com.app.cars.security.service.TokensService;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,17 +33,10 @@ public class TokensServiceImpl implements TokensService {
 
 
     @Override
-    public TokensDto generateToken(AuthenticationDto authenticationDto) {
+    public TokensDto generateToken(Authentication authentication) {
         var userFromDb = userEntityRepository
-                .findByUsername(authenticationDto.username())
+                .findByUsername(authentication.getName())
                 .orElseThrow(() ->new IllegalStateException("Authentication failed [1]"));
-
-        if(!passwordEncoder.matches(
-                authenticationDto.password(),
-                userFromDb.getPassword()
-        )) {
-            throw new IllegalStateException("Authentication failed [2]");
-        }
 
         var userId = userFromDb.getId();
         var currentDate = new Date();
