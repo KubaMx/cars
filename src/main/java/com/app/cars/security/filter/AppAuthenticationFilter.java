@@ -72,6 +72,6 @@ public class AppAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.getWriter().write(new ObjectMapper().writeValueAsString(tokens));
         response.getWriter().flush();
         response.getWriter().close();
-        
+
     }
 }
