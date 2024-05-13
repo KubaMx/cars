@@ -7,6 +7,6 @@ import org.springframework.security.core.Authentication;
 
 public interface TokensService {
     TokensDto generateToken(Authentication authentication);
-    UsernamePasswordAuthenticationToken parseTokens(String token);
+    UsernamePasswordAuthenticationToken parseAccessToken(String token);
     TokensDto refreshTokens(RefreshTokenDto refreshTokenDto);
 }
