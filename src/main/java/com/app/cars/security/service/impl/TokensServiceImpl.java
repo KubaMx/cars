@@ -68,11 +68,7 @@ public class TokensServiceImpl implements TokensService {
     }
 
     @Override
-    public UsernamePasswordAuthenticationToken parseTokens(String header) {
-        if (header == null) {
-         throw new IllegalArgumentException("Authorization header is failed");
-        }
-
+    public UsernamePasswordAuthenticationToken parseAccessToken(String header) {
         if (!header.startsWith(tokensPrefix)) {
             throw new IllegalArgumentException("Authorization header incorrect format");
         }
