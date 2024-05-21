@@ -15,7 +15,7 @@ import java.io.IOException;
 public class AppAuthorizationFilter extends BasicAuthenticationFilter {
     private final TokensService tokensService;
 
-    public AppAuthorizationFilter(AuthenticationManager authenticationManager, TokensService tokensService) {
+    public AppAuthorizationFilter(TokensService tokensService, AuthenticationManager authenticationManager) {
         super(authenticationManager);
         this.tokensService = tokensService;
     }
