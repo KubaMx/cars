@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -21,6 +22,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @EnableWebSecurity
 @Configuration
@@ -42,23 +48,23 @@ public class AppWebSecurityConfig {
         var authenticationManager = authenticationManagerBuilder.build();
 
         httpSecurity
-                .cors(httpSecurityCorsConfigurer -> {
-
-                })
+                .cors(httpSecurityCorsConfigurer ->
+                    httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource())
+                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {
                     httpSecurityExceptionHandlingConfigurer.accessDeniedHandler(accessDeniedHandler());
                     httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(authenticationEntryPoint());
                 })
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
-                    httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
-                    authorizationManagerRequestMatcherRegistry
-                            .requestMatchers(HttpMethod.POST, "/users/**", "/login")
-                            .permitAll()
-                            .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-                            .anyRequest()
-                            .authenticated())
+                        authorizationManagerRequestMatcherRegistry
+                                .requestMatchers(HttpMethod.POST, "/users/**", "/login")
+                                .permitAll()
+                                .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                                .anyRequest()
+                                .authenticated())
                 .addFilter(new AppAuthenticationFilter(tokensService, authenticationManager))
                 .addFilter(new AppAuthorizationFilter(tokensService, authenticationManager))
                 .authenticationManager(authenticationManager);
@@ -86,6 +92,32 @@ public class AppWebSecurityConfig {
             response.getWriter().flush();
             response.getWriter().close();
         };
+    }
+
+    // @Bean
+    // public CorsConfigurationSource corsConfigurationSource(){
+
+    private CorsConfigurationSource corsConfigurationSource() {
+        var corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setAllowedHeaders(List.of(
+                HttpHeaders.AUTHORIZATION,
+                HttpHeaders.CONTENT_TYPE,
+                HttpHeaders.CACHE_CONTROL
+        ));
+        corsConfiguration.setAllowedMethods(List.of(
+                HttpMethod.POST.name(),
+                HttpMethod.GET.name(),
+                HttpMethod.PUT.name(),
+                HttpMethod.DELETE.name(),
+                HttpMethod.PATCH.name(),
+                HttpMethod.OPTIONS.name()
+        ));
+
+        var source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
     }
 
 }
