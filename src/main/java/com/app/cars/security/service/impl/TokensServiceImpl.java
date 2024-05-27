@@ -110,9 +110,9 @@ public class TokensServiceImpl implements TokensService {
     private Claims claims(String token) {
         return Jwts
                 .parser()
-                .decryptWith(secretKey)
+                .verifyWith(secretKey)
                 .build()
-                .parseEncryptedClaims(token)
+                .parseSignedClaims(token)
                 .getPayload();
     }
 

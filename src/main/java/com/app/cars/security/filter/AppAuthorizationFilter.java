@@ -20,6 +20,7 @@ public class AppAuthorizationFilter extends BasicAuthenticationFilter {
         this.tokensService = tokensService;
     }
 
+    // TODO to tutaj jest blad, header jest nullem
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -27,7 +28,7 @@ public class AppAuthorizationFilter extends BasicAuthenticationFilter {
             FilterChain chain) throws IOException, ServletException {
         var header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (header == null) {
+        if (header != null) {
             var authorizedUser = tokensService.parseAccessToken(header);
             SecurityContextHolder.getContext().setAuthentication(authorizedUser);
 
