@@ -62,7 +62,8 @@ public class AppWebSecurityConfig {
                         authorizationManagerRequestMatcherRegistry
                                 .requestMatchers(HttpMethod.POST, "/users/**", "/login")
                                 .permitAll()
-                                .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                                .requestMatchers("api/user/**").hasAnyRole("USER")
+                                .requestMatchers("api/admin/**").hasAnyRole("ADMIN")
                                 .anyRequest()
                                 .authenticated())
                 .addFilter(new AppAuthenticationFilter(tokensService, authenticationManager))
