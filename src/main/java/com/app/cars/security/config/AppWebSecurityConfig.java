@@ -76,6 +76,11 @@ public class AppWebSecurityConfig {
     private AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, authException) -> {
             var ex = new AuthenticationErrorDto(authException.getMessage());
+            // TODO przemyśleć jakie błędu tutaj przychodzą
+            // jesli wynika z bledu parsowania tokena to rzucić 403
+            // a w przeciwnym razie 500 - rozbudować poniższą sekcję
+            // System.out.println(authException.getCause());
+            // System.out.println(authException.getMessage());
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.getWriter().write(new ObjectMapper().writeValueAsString(ex));
