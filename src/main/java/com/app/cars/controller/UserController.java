@@ -16,6 +16,7 @@ public class UserController {
     private final UsersService usersService;
 
     @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseDto<Long> registerUser (@RequestBody CreateUserDto createUserDto) {
         return new ResponseDto<>(usersService.registerUser(createUserDto));
     }
