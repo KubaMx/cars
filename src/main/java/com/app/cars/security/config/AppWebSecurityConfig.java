@@ -78,7 +78,7 @@ public class AppWebSecurityConfig {
             var ex = new AuthenticationErrorDto(authException.getMessage());
             // TODO przemyśleć jakie błędu tutaj przychodzą
             // jesli wynika z bledu parsowania tokena to rzucić 403
-            // a w przeciwnym razie 500 - rozbudować poniższą sekcję
+            // a w przeciwnym razie, jesli blad nie jest zwiazany z security 500 - rozbudować poniższą sekcję
             // System.out.println(authException.getCause());
             // System.out.println(authException.getMessage());
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
